@@ -37,26 +37,23 @@ show instructions?
   const db = getFirestore(initializeApp(firebaseConfig));
 
   onMount(async () => {
-    //get the board from the database:
-    const gameDoc = doc(db, "codenames", "game");
-    const gameSnap = await getDoc(gameDoc);
-
-    if (gameSnap.exists()) {
-      const gameData = gameSnap.data();
-      wordGrid = JSON.parse(gameData.wordGrid);
-      secretGrid = JSON.parse(gameData.secretGrid);
-      statusGrid = JSON.parse(gameData.statusGrid);
-    } else {
-      buildBoard();
+    // get a deck
+    let deck = [
+      {suit: "D", number: 2},{suit: "D",number: 3},{suit: "D", number:4},{suit: "D", number:5},{suit: "D", number:6},{suit: "D", number:7},{suit: "D", number:8},{suit: "D", number:9},{suit: "D", number:10},{suit: "D", number:11},{suit: "D", number:12},{suit: "D", number:13},{suit: "D", number: 14},
+      {suit: "H", number: 2},{suit: "H", number: 3},{suit: "H", number: 4},{suit: "H", number: 5},{suit: "H", number: 6},{suit: "H", number: 7},{suit: "H", number: 8},{suit: "H", number: 9},{suit: "H", number: 10},{suit: "H", number: 11},{suit: "H", number: 12},{suit: "H", number: 13},{suit: "H", number: 14},
+      {suit: "S", number: 2},{suit: "S", number: 3},{suit: "S", number: 4},{suit: "S", number: 5},{suit: "S", number: 6},{suit: "S", number: 7},{suit: "S", number: 8},{suit: "S", number: 9},{suit: "S", number: 10},{suit: "S", number: 11},{suit: "S", number: 12},{suit: "S", number: 13},{suit: "S", number: 14},
+      {suit: "C", number: 2},{suit: "C", number: 3},{suit: "C", number: 4},{suit: "C", number: 5},{suit: "C", number: 6},{suit: "C", number: 7},{suit: "C", number: 8},{suit: "C", number: 9},{suit: "C", number: 10},{suit: "C", number: 11},{suit: "C", number: 12},{suit: "C", number: 13},{suit: "C", number: 14}
+    ]
+    let hands = [[],[],[],[]];
+    for (let i = 0; i < hands.length; i++) {
+      for (let j = 0; j < 13; j++) {
+        let index = Math.floor(Math.random()*deck.length);
+        hands[i].push(deck[index]);
+        deck.splice(index, 1);
+      }
     }
-    isLoaded = true;
-
-    onSnapshot(gameDoc, (gameSnap) => {
-      const gameData = gameSnap.data();
-      wordGrid = JSON.parse(gameData.wordGrid);
-      secretGrid = JSON.parse(gameData.secretGrid);
-      statusGrid = JSON.parse(gameData.statusGrid);
-    });
+    console.log(hands);
+    
   });
 
   $: {
@@ -116,29 +113,17 @@ show instructions?
 </script>
 
 <main>
-  <h1>WebE Codenames</h1>
+  <h1>Hearts Online Arena</h1>
 
-  <input type="checkbox" bind:checked={isSpymaster} />
-  <button on:click={buildBoard}>New Game</button>
-  Spymaster
-
-  <div class="grid">
-    {#each wordGrid as row, i}
-      {#each row as word, j}
-        <button
-          on:click={() => (statusGrid[i][j] = "CLICKED")}
-          class="grid-item {isSpymaster || statusGrid[i][j] === 'CLICKED'
-            ? secretGrid[i][j]
-            : ''}
-            {statusGrid[i][j]}">{word}</button
-        >
-      {/each}
-    {/each}
+  <div class="trick"></div>
+  <div class="hand">
+    
+  </div>
   </div>
 </main>
 
 <style>
-  .grid {
+  /* .grid {
     display: grid;
     grid-template-columns: repeat(5, 1fr);
     gap: 10px;
@@ -168,5 +153,5 @@ show instructions?
   }
   .ASSASSIN {
     background-color: black;
-  }
+  } */
 </style>
