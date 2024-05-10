@@ -18,23 +18,23 @@ show instructions?
     setDoc,
   } from "firebase/firestore";
 
-  let wordGrid = [];
-  const boardsize = 5;
-  let isSpymaster = false;
-  let secretGrid = [];
-  let statusGrid = [];
-  let isLoaded = false;
+  // let wordGrid = [];
+  // const boardsize = 5;
+  // let isSpymaster = false;
+  // let secretGrid = [];
+  // let statusGrid = [];
+  // let isLoaded = false;
 
-  const firebaseConfig = {
-    apiKey: "AIzaSyAZAb-j5x4Oh0STIRCRs1ssIHbdWUCyNyg",
-    authDomain: "codenames-webe-class.firebaseapp.com",
-    projectId: "codenames-webe-class",
-    storageBucket: "codenames-webe-class.appspot.com",
-    messagingSenderId: "266546182911",
-    appId: "1:266546182911:web:20fbf477fbd6f4e98f2aca",
-  };
+  // const firebaseConfig = {
+  //   apiKey: "AIzaSyAZAb-j5x4Oh0STIRCRs1ssIHbdWUCyNyg",
+  //   authDomain: "codenames-webe-class.firebaseapp.com",
+  //   projectId: "codenames-webe-class",
+  //   storageBucket: "codenames-webe-class.appspot.com",
+  //   messagingSenderId: "266546182911",
+  //   appId: "1:266546182911:web:20fbf477fbd6f4e98f2aca",
+  // };
 
-  const db = getFirestore(initializeApp(firebaseConfig));
+  // const db = getFirestore(initializeApp(firebaseConfig));
 
   onMount(async () => {
     // get a deck
