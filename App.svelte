@@ -55,61 +55,6 @@ show instructions?
     console.log(hands);
     
   });
-
-  $: {
-    if (isLoaded) {
-      const gameDoc = doc(db, "codenames", "game");
-      setDoc(gameDoc, {
-        wordGrid: JSON.stringify(wordGrid),
-        secretGrid: JSON.stringify(secretGrid),
-        statusGrid: JSON.stringify(statusGrid),
-      });
-    }
-  }
-
-  function buildBoard() {
-    isLoaded = false;
-    //BUILD THE WORD BOARD:
-    fetch("wordlist.txt")
-      .then((response) => response.text())
-      .then((text) => {
-        const words = text.split("\n");
-
-        for (let i = 0; i < boardsize; i++) {
-          let row = [];
-          for (let j = 0; j < boardsize; j++) {
-            let randomIndex = Math.floor(Math.random() * words.length);
-            row.push(words[randomIndex]);
-            words.splice(randomIndex, 1);
-          }
-          wordGrid.push(row);
-          wordGrid = wordGrid;
-        }
-        isLoaded = true;
-      });
-
-    //BUILD THE SECRET GRID:
-    let colors = Array(9)
-      .fill("RED")
-      .concat(Array(8).fill("BLUE"))
-      .concat(Array(7).fill("NEUTRAL"))
-      .concat(["ASSASSIN"]);
-    for (let i = 0; i < boardsize; i++) {
-      let row = [];
-      for (let j = 0; j < boardsize; j++) {
-        let randomIndex = Math.floor(Math.random() * colors.length);
-        row.push(colors[randomIndex]);
-        colors.splice(randomIndex, 1);
-      }
-      secretGrid.push(row);
-      secretGrid = secretGrid;
-    }
-
-    //BUILD THE STATUS GRID:
-    statusGrid = Array(boardsize)
-      .fill()
-      .map(() => Array(boardsize).fill("UNCLICKED"));
-  }
 </script>
 
 <main>
