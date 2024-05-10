@@ -119,7 +119,6 @@ show instructions?
   <div class="hand">
     
   </div>
-  </div>
 </main>
 
 <style>
