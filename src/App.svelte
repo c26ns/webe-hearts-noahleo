@@ -18,24 +18,25 @@ show instructions?
     setDoc,
   } from "firebase/firestore";
 
-  let wordGrid = [];
-  const boardsize = 5;
-  let isSpymaster = false;
-  let secretGrid = [];
-  let statusGrid = [];
-  let isLoaded = false;
+  // let wordGrid = [];
+  // const boardsize = 5;
+  // let isSpymaster = false;
+  // let secretGrid = [];
+  // let statusGrid = [];
+  // let isLoaded = false;
 
-  const firebaseConfig = {
-    apiKey: "AIzaSyAZAb-j5x4Oh0STIRCRs1ssIHbdWUCyNyg",
-    authDomain: "codenames-webe-class.firebaseapp.com",
-    projectId: "codenames-webe-class",
-    storageBucket: "codenames-webe-class.appspot.com",
-    messagingSenderId: "266546182911",
-    appId: "1:266546182911:web:20fbf477fbd6f4e98f2aca",
-  };
+  // const firebaseConfig = {
+  //   apiKey: "AIzaSyAZAb-j5x4Oh0STIRCRs1ssIHbdWUCyNyg",
+  //   authDomain: "codenames-webe-class.firebaseapp.com",
+  //   projectId: "codenames-webe-class",
+  //   storageBucket: "codenames-webe-class.appspot.com",
+  //   messagingSenderId: "266546182911",
+  //   appId: "1:266546182911:web:20fbf477fbd6f4e98f2aca",
+  // };
 
-  const db = getFirestore(initializeApp(firebaseConfig));
+  // const db = getFirestore(initializeApp(firebaseConfig));
 
+  let hands;
   onMount(async () => {
     // get a deck
     let deck = [
@@ -44,7 +45,7 @@ show instructions?
       {suit: "S", number: 2},{suit: "S", number: 3},{suit: "S", number: 4},{suit: "S", number: 5},{suit: "S", number: 6},{suit: "S", number: 7},{suit: "S", number: 8},{suit: "S", number: 9},{suit: "S", number: 10},{suit: "S", number: 11},{suit: "S", number: 12},{suit: "S", number: 13},{suit: "S", number: 14},
       {suit: "C", number: 2},{suit: "C", number: 3},{suit: "C", number: 4},{suit: "C", number: 5},{suit: "C", number: 6},{suit: "C", number: 7},{suit: "C", number: 8},{suit: "C", number: 9},{suit: "C", number: 10},{suit: "C", number: 11},{suit: "C", number: 12},{suit: "C", number: 13},{suit: "C", number: 14}
     ]
-    let hands = [[],[],[],[]];
+    hands = [[],[],[],[]];
     for (let i = 0; i < hands.length; i++) {
       for (let j = 0; j < 13; j++) {
         let index = Math.floor(Math.random()*deck.length);
@@ -55,61 +56,6 @@ show instructions?
     console.log(hands);
     
   });
-
-  $: {
-    if (isLoaded) {
-      const gameDoc = doc(db, "codenames", "game");
-      setDoc(gameDoc, {
-        wordGrid: JSON.stringify(wordGrid),
-        secretGrid: JSON.stringify(secretGrid),
-        statusGrid: JSON.stringify(statusGrid),
-      });
-    }
-  }
-
-  function buildBoard() {
-    isLoaded = false;
-    //BUILD THE WORD BOARD:
-    fetch("wordlist.txt")
-      .then((response) => response.text())
-      .then((text) => {
-        const words = text.split("\n");
-
-        for (let i = 0; i < boardsize; i++) {
-          let row = [];
-          for (let j = 0; j < boardsize; j++) {
-            let randomIndex = Math.floor(Math.random() * words.length);
-            row.push(words[randomIndex]);
-            words.splice(randomIndex, 1);
-          }
-          wordGrid.push(row);
-          wordGrid = wordGrid;
-        }
-        isLoaded = true;
-      });
-
-    //BUILD THE SECRET GRID:
-    let colors = Array(9)
-      .fill("RED")
-      .concat(Array(8).fill("BLUE"))
-      .concat(Array(7).fill("NEUTRAL"))
-      .concat(["ASSASSIN"]);
-    for (let i = 0; i < boardsize; i++) {
-      let row = [];
-      for (let j = 0; j < boardsize; j++) {
-        let randomIndex = Math.floor(Math.random() * colors.length);
-        row.push(colors[randomIndex]);
-        colors.splice(randomIndex, 1);
-      }
-      secretGrid.push(row);
-      secretGrid = secretGrid;
-    }
-
-    //BUILD THE STATUS GRID:
-    statusGrid = Array(boardsize)
-      .fill()
-      .map(() => Array(boardsize).fill("UNCLICKED"));
-  }
 </script>
 
 <main>
@@ -117,40 +63,18 @@ show instructions?
 
   <div class="trick"></div>
   <div class="hand">
-    
+    {#each hands[0] as card}
+      <div class="grid-item">
+        {card.number} {card.suit}
+      </div>
+    {/each}
   </div>
 </main>
 
 <style>
-  /* .grid {
+  .hand {
     display: grid;
     grid-template-columns: repeat(5, 1fr);
     gap: 10px;
   }
-  .grid-item {
-    border: 1px solid black;
-    border-radius: 5px;
-    padding: 10px;
-    text-align: center;
-    transition: background-color 0.5s;
-    background-color: grey;
-    color: white;
-  }
-  .CLICKED {
-    border: 3px;
-    font-weight: bolder;
-    opacity: 50%;
-  }
-  .BLUE {
-    background-color: blue;
-  }
-  .RED {
-    background-color: red;
-  }
-  .NEUTRAL {
-    background-color: darkkhaki;
-  }
-  .ASSASSIN {
-    background-color: black;
-  } */
 </style>
