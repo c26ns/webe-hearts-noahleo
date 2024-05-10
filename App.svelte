@@ -36,6 +36,7 @@ show instructions?
 
   // const db = getFirestore(initializeApp(firebaseConfig));
 
+  let hands;
   onMount(async () => {
     // get a deck
     let deck = [
@@ -44,7 +45,7 @@ show instructions?
       {suit: "S", number: 2},{suit: "S", number: 3},{suit: "S", number: 4},{suit: "S", number: 5},{suit: "S", number: 6},{suit: "S", number: 7},{suit: "S", number: 8},{suit: "S", number: 9},{suit: "S", number: 10},{suit: "S", number: 11},{suit: "S", number: 12},{suit: "S", number: 13},{suit: "S", number: 14},
       {suit: "C", number: 2},{suit: "C", number: 3},{suit: "C", number: 4},{suit: "C", number: 5},{suit: "C", number: 6},{suit: "C", number: 7},{suit: "C", number: 8},{suit: "C", number: 9},{suit: "C", number: 10},{suit: "C", number: 11},{suit: "C", number: 12},{suit: "C", number: 13},{suit: "C", number: 14}
     ]
-    let hands = [[],[],[],[]];
+    hands = [[],[],[],[]];
     for (let i = 0; i < hands.length; i++) {
       for (let j = 0; j < 13; j++) {
         let index = Math.floor(Math.random()*deck.length);
@@ -62,40 +63,18 @@ show instructions?
 
   <div class="trick"></div>
   <div class="hand">
-    
+    {#each hands[0] as card}
+      <div class="grid-item">
+        {card.number} {card.suit}
+      </div>
+    {/each}
   </div>
 </main>
 
 <style>
-  /* .grid {
+  .hand {
     display: grid;
     grid-template-columns: repeat(5, 1fr);
     gap: 10px;
   }
-  .grid-item {
-    border: 1px solid black;
-    border-radius: 5px;
-    padding: 10px;
-    text-align: center;
-    transition: background-color 0.5s;
-    background-color: grey;
-    color: white;
-  }
-  .CLICKED {
-    border: 3px;
-    font-weight: bolder;
-    opacity: 50%;
-  }
-  .BLUE {
-    background-color: blue;
-  }
-  .RED {
-    background-color: red;
-  }
-  .NEUTRAL {
-    background-color: darkkhaki;
-  }
-  .ASSASSIN {
-    background-color: black;
-  } */
 </style>
