@@ -1,10 +1,3 @@
-<!-- 
-be the code master or the game player
-click on buttons to reveal colors
-pick which team you are on
-sync across browsers so we are all playing the same game
-show instructions?
- -->
 
 <script>
   import { onMount } from "svelte";
@@ -63,11 +56,11 @@ show instructions?
 
   <div class="trick"></div>
   <div class="hand">
-    {#each hands[0] as card}
+    <!-- {#each hands[0] as card}
       <div class="grid-item">
         {card.number} {card.suit}
       </div>
-    {/each}
+    {/each} -->
   </div>
 </main>
 
