@@ -56,12 +56,11 @@
 
   <div class="trick"></div>
   <div class="hand">
-    <!-- {#each hands[0] as card}
+    {#each hands[0] as card}
       <div class="grid-item">
         {card.number} {card.suit}
       </div>
-    {/each} -->
-    {typeof(hands)}
+    {/each}
   </div>
 </main>
 
@@ -70,5 +69,6 @@
     display: grid;
     grid-template-columns: repeat(5, 1fr);
     gap: 10px;
+    justify-content: center;
   }
 </style>
