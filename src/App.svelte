@@ -30,6 +30,7 @@
   // const db = getFirestore(initializeApp(firebaseConfig));
 
   let hands = [[], [], [], []];
+  let currentPlayer = 0;
   onMount(async () => {
     // get a deck
     const deck = [
@@ -54,17 +55,22 @@
   <h1>Hearts Online Arena</h1>
 
   <div class="trick"></div>
+  <h3>Pick a hand:</h3>
   <div class="playerselect">
-    
+  {#each [0, 1, 2, 3, 4] as val}
+    <button class="handbutton" on:click={() => {currentPlayer = val-1;}}>{val}</button>
+  {/each}
   </div>
-  <h3>Your Hand:</h3>
-  <div class="hand">
-    {#each hands[0] as card}
-      <button class="grid-item {card.suit === "S" || card.suit === "C" ? "black" : "red" }">
-        {card.number} {card.suit}
-      </button>
-    {/each}
-  </div>
+  {#if currentPlayer >= 0}
+    <h3>Your Hand:</h3>
+    <div class="hand">
+      {#each hands[currentPlayer] as card}
+        <button class="grid-item {card.suit === "S" || card.suit === "C" ? "black" : "red" }">
+          {card.number} {card.suit}
+        </button>
+      {/each}
+    </div>
+  {/if}
 </main>
 
 <style>
@@ -82,5 +88,8 @@
   }
   .red {
     color: red
+  }
+  .handbutton {
+    margin: 5px;
   }
 </style>
