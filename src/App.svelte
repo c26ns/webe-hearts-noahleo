@@ -30,7 +30,9 @@
   // const db = getFirestore(initializeApp(firebaseConfig));
 
   let hands = [[], [], [], []];
-  let currentPlayer = 0;
+  let currentPlayer = -1;
+  let currentState;
+  const PASSING = 100;
   onMount(async () => {
     // get a deck
     const deck = [
@@ -49,6 +51,24 @@
     hands = hands;
     
   });
+
+  let sortHand = (val) => {
+    const oldHand = hands[val].slice();
+    let newHand = [];
+    const suits = ["C", "S", "D", "H"];
+    suits.forEach(suit => {
+      let cards = []
+      for (let i = 0; i < oldHand.length; i++) {
+        if (oldHand[i].suit === suit) {
+          cards.push(oldHand[i]);
+          oldHand.splice(i, 1);
+        }
+      }
+      cards.sort((a, b) => {return a.number - b.number})
+      newHand = newHand.concat(cards)
+    });
+    hands[val] = newHand;
+  };
 </script>
 
 <main>
@@ -62,14 +82,20 @@
   {/each}
   </div>
   {#if currentPlayer >= 0}
-    <h3>Your Hand:</h3>
+    <h3>Your Hand (player {currentPlayer+1}):</h3>
     <div class="hand">
       {#each hands[currentPlayer] as card}
-        <button class="grid-item {card.suit === "S" || card.suit === "C" ? "black" : "red" }">
+        <button class="grid-item {card.suit === "S" || card.suit === "C" ? "black" : "red" }"
+
+        >
           {card.number} {card.suit}
         </button>
       {/each}
     </div>
+    <br>
+    <button
+      on:click={() => {sortHand(currentPlayer)}}
+    >Sort Hand</button>
   {/if}
 </main>
 
