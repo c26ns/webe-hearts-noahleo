@@ -61,10 +61,10 @@
       for (let i = 0; i < oldHand.length; i++) {
         if (oldHand[i].suit === suit) {
           cards.push(oldHand[i]);
-          oldHand.splice(i, 1);
+          oldHand.splice(i, 0);
         }
       }
-      cards.sort((a, b) => {return a.number - b.number})
+      cards = cards.sort((a, b) => a.number - b.number)
       newHand = newHand.concat(cards)
     });
     hands[val] = newHand;
