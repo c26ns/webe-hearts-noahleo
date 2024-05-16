@@ -33,6 +33,8 @@
   let currentPlayer = -1;
   let currentState;
   const PASSING = 100;
+  const PLAYING = 101;
+  let gameRound = 0;
   onMount(async () => {
     // get a deck
     const deck = [
@@ -55,7 +57,7 @@
   let sortHand = (val) => {
     const oldHand = hands[val].slice();
     let newHand = [];
-    const suits = ["C", "S", "D", "H"];
+    const suits = ["C", "D", "S", "H"];
     suits.forEach(suit => {
       let cards = []
       for (let i = 0; i < oldHand.length; i++) {
@@ -78,7 +80,7 @@
   <h3>Pick a hand:</h3>
   <div class="playerselect">
   {#each [0, 1, 2, 3, 4] as val}
-    <button class="handbutton" on:click={() => {currentPlayer = val-1;}}>{val}</button>
+    <button class="handbutton" on:click={() => {currentPlayer = val-1;}} >{val ? val : "Hide hand"}</button>
   {/each}
   </div>
   {#if currentPlayer >= 0}
