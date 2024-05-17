@@ -31,10 +31,11 @@
 
   let hands = [[], [], [], []];
   let currentPlayer = -1;
-  let currentState;
-  const PASSING = 100;
-  const PLAYING = 101;
   let gameRound = 0;
+  let passCards = [[], [], [], []];
+  const passInc = Math.floor(Math.random() * 3) + 1;
+  let currentTrick = []
+  // let allTrick = 
   onMount(async () => {
     // get a deck
     const deck = [
@@ -71,24 +72,54 @@
     });
     hands[val] = newHand;
   };
+
+  $: if (gameRound === 0) {
+    let passCardsFull = true;
+    for (let i = 0; i < passCards.length; i++) {
+      if (passCards[i].length != 3) {
+        passCardsFull = false;
+        break;
+      }
+    }
+    if (passCardsFull) {
+      gameRound = 1;
+      for (let i = 0; i < hands.length; i++) {
+        hands[i] = hands[i].concat(passCards[i]);
+      }
+    }
+  }
 </script>
 
 <main>
   <h1>Hearts Online Arena</h1>
 
-  <div class="trick"></div>
+  <div class="trick">
+
+  </div>
   <h3>Pick a hand:</h3>
   <div class="playerselect">
   {#each [0, 1, 2, 3, 4] as val}
     <button class="handbutton" on:click={() => {currentPlayer = val-1;}} >{val ? val : "Hide hand"}</button>
   {/each}
   </div>
+  {#if !gameRound}
+    <h2>Select three cards to pass!</h2>
+  {:else}
+    <h2>Currently on trick {gameRound}!</h2>
+  {/if}
   {#if currentPlayer >= 0}
     <h3>Your Hand (player {currentPlayer+1}):</h3>
     <div class="hand">
       {#each hands[currentPlayer] as card}
         <button class="grid-item {card.suit === "S" || card.suit === "C" ? "black" : "red" }"
-
+          on:click={() => {
+            if (!gameRound && passCards[(currentPlayer+passInc) % 4].length < 3) {
+              passCards[(currentPlayer+passInc)%4].push(card);
+              console.log(passCards);
+              hands[currentPlayer].splice(hands[currentPlayer].indexOf(card),1);
+              hands[currentPlayer] = hands[currentPlayer];
+            }
+          }}
         >
           {card.number} {card.suit}
         </button>
