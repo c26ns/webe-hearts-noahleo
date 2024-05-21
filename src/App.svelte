@@ -34,8 +34,7 @@
   let gameRound = 0;
   let passCards = [[], [], [], []];
   const passInc = Math.floor(Math.random() * 3) + 1;
-  let currentTrick = []
-  // let allTrick = 
+  let currentTrick = [];
   onMount(async () => {
     // get a deck
     const deck = [
